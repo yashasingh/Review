@@ -2,23 +2,54 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import json
 import requests
+import toolforge
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")    
+def main2(request):
+    if(request.method=='POST'):
+        usr = request.POST['username']
+        SqlQuery1 = "SELECT user_editcount FROM user WHERE user_name='" + usr + "';"
+        SqlQuery2 = "SELECT ss_total_edits FROM site_stats"
+        SqlQuery3 = "select rank from (select user_name, @curRank := @curRank + 1 as rank from user p, ( select @curRank := 0 ) q order by user_editcount DESC) q where user_name='"+usr+"';"
+        SqlQuery4 = "select count(*) from user;"
+        conn = toolforge.connect('kawiki_p')
+        with conn.cursor() as curr:
+            s1 = curr.execute(SqlQuery1)
+            useredits_tup = curr.fetchall()
+            s2 = curr.execute(SqlQuery2)
+            totaledits_tup =curr.fetchall()
+            s3 = curr.execute(SqlQuery3)
+            userrank_tup = curr.fetchall()
+            s4 = curr.execute(SqlQuery4)
+            totalusers_tup = curr.fetchall()
 
-def main(request):
-	if(request.method=='POST'):
-		usr = request.POST['username']  #Here, we get the useranme fetched from html page
-		URL = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=usercontribs&ucuser="
-		URL = URL + usr
-		r = requests.get(URL)  #Recieved data in json-format
-		lst = json.loads(r.text)
-		sub_lst = lst['query']['usercontribs'] #Contribution data extracted
-		try:
-			fetched_user = sub_lst[0]['user']
-			fetched_user_id = sub_lst[0]['userid']
-		except:
-			fetched_user = fetched_user_id = 'No user found'
-		return(render(request,'App/index.html',{'contribution':sub_lst, 'username':fetched_user, 'userid':fetched_user_id}))  #Here I send contribution for display on index.html page
-	else:
-		return(render(request,'App/index.html',{}))
+        conn.close()
+        useredits = useredits_tup[0][0]
+        totaledits = totaledits_tup[0][0]
+        userrank = userrank_tup[0][0]
+        totalusers = totalusers_tup[0][0]
+
+        percentile = 100-((userrank*100)/(totalusers+1))
+        rating = (userrank/totalusers)*100
+        if(rating<=1):
+            userrating = "User lies in top 1%"
+        elif(rating >1 and rating<=5):
+            userrating = "User lies in top 5%" 
+        elif(rating >5 and rating<=10):
+            userrating = "User lies in top 10%"
+        elif(rating >10 and rating<=20):
+            userrating = "User lies in top 20%"
+        elif(rating >20 and rating<=30):
+            userrating = "User lies in top 30%"
+        elif(rating >30 and rating<=40):
+            userrating = "User lies in top 40%"
+        elif(rating >40 and rating<=50):
+            userrating = "User lies in top 50%"
+        elif(rating >50 and rating<=60):
+            userrating = "User lies below top 50%"
+        elif(rating >60 and rating<=70):
+            userrating = "User lies below top 60%"
+        else:
+             userrating =  "User lies below top 70%"
+        return(render(request, 'Microtask1/task2.html',{'edits':useredits, 'name':usr, 'total_edits':totaledits, 'rank':userrank, 'total_users':totalusers, 'Percentile':percentile, 'user_rating':userrating}))
+    else:
+        return(render(request, 'Microtask1/task2.html',{}))
