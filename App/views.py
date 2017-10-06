@@ -9,6 +9,10 @@ def main2(request):
     if(request.method=='POST'):
         flag = 1
         usr = request.POST['username']
+        a = 1 if re.match("^[a-zA-Z0-9_ ]*$", s) else 0
+        if(!a):
+            flag=0
+            return(render(request, 'Microtask1/task2.html',{"false_query":1}))
         SqlQuery1 = "SELECT user_editcount FROM user WHERE user_name='" + usr + "';"
         SqlQuery2 = "SELECT ss_total_edits FROM site_stats"
         #SqlQuery3 = "select rank from (select user_name, @curRank := @curRank + 1 as rank from user p, ( select @curRank := 0 ) q order by user_editcount DESC) q where user_name='"+usr+"';"
@@ -39,7 +43,6 @@ def main2(request):
             rating = math.ceil((userrank/totalusers)*100)
             userrating = "User lies in top "+str(rating) + "%"
             return(render(request, 'Microtask1/task2.html',{'edits':useredits, 'name':usr, 'total_edits':totaledits, 'rank':userrank, 'total_users':totalusers, 'Percentile':percentile, 'user_rating':userrating}))
-        
         return(render(request, 'Microtask1/task2.html',{"false_query":1}))
     else:
         return(render(request, 'Microtask1/task2.html',{}))
