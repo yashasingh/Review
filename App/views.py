@@ -3,9 +3,6 @@ from django.shortcuts import render
 import json
 import requests
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")    
-
 def main(request):
     if(request.method=='POST'):
         usr = request.POST['username']  #Here, we get the username fetched from html page
