@@ -6,7 +6,7 @@ import requests
 def main(request):
     if(request.method=='POST'):
         usr = request.POST['username']  #Here, we get the username fetched from html page
-        usr = usr.replace("&","%26")
+        usr = usr.replace("&","")
         URL = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=usercontribs&ucuser="
         URL = URL + usr
         r = requests.get(URL)  #Recieved data in json-format
@@ -16,7 +16,7 @@ def main(request):
             lst = json.loads(r.text)
             try:    
                 if(lst['error']):
-                    return(render(request,'App/index.html',{"error":'INVALID INPUT'}))
+                    return(render(request,'App/index.html',{"error":lst['error']['info']}))
             except:   
                 sub_lst = lst['query']['usercontribs'] #Contribution data extracted
                 if(len(sub_lst)==0):
