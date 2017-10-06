@@ -15,10 +15,12 @@
 	    </center> 
 	    
 	    <h2>
-	    {% if userid %}
+	    {% if error %}
+	    	{{error}}
+	    {% endif %}
+	    {% if username %}
 	    	Username = {{username}} <br>
-	    	Userid = {{userid}} <br>
-	    	<a href="https://phabricator.wikimedia.org/p/{{username}}/"> Profile link </a>
+	    	<!-- <a href="https://phabricator.wikimedia.org/p/{{username}}/"> Profile link </a> -->
 		<br>
 		<br>
 		<h1>English Edits- </h1><br>
@@ -26,6 +28,7 @@
 		</h2>
 	    {% for x in contribution %}  <!-- Here I traverse all the contributions and display the following div-->
 	    <div>
+	    	user = {{x.user}}
 	    	Title = {{x.title}} <br>
 	    	PageID = {{x.pageid}} <br>
 	    	RevisionID = {{x.revid}} <br>
@@ -35,7 +38,7 @@
 	    	Comment = {{x.comment}} <br>
 	    	Size = {{x.size}} <br>
 
-	    	<a href="https://en.wikipedia.org/w/index.php?title=User:{{x.user}}&diff=prev&oldid={{x.revid}}">
+	    	<a href="https://en.wikipedia.org/w/index.php?title=User:{{x.user}}&amp;diff=prev&amp;oldid={{x.revid}}">
 	    		click here to revise edit.
 	    	</a>
 
