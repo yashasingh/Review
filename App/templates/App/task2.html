@@ -5,7 +5,8 @@
 </head>
 <body>
         <center>
-            <h2>Tool to display user Percentile and Rank</h2>
+            <h2>Tool to display user Percentile and Rank in Georgian wiki</h2>
+            <p>Enter initial letter of username in capital</p> <br>
             <form method="post">
                 {% csrf_token %}
                 Enter username: <input type="text" name="username">
@@ -18,16 +19,19 @@
         <br>
         <br>
         <br>
+        
+        {% if false_query %}
+            <h2>No user found</h2> <br>
+        {% endif %}
+
         {% if name %}
-
-        Name = {{name}} <br>
-        Useredits = {{edits}} <br>
-        Total_edits = {{total_edits}} <br>
-        Rank = {{rank}} <br>
-        Total_users = {{total_users}} <br>
-        Percentile = {{Percentile}} <br>
-        User rating = {{user_rating}} <br>
-
+            Name = {{name}} <br>
+            Useredits = {{edits}} <br>
+            Total_edits = {{total_edits}} <br>
+            Rank = {{rank}} <br>
+            Total_users = {{total_users}} <br>
+            Percentile = {{Percentile}} <br>
+            User rating = {{user_rating}} <br>
        {% endif %}
 
 </body>
