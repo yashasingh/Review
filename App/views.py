@@ -6,7 +6,6 @@ import requests
 def main(request):
     if(request.method=='POST'):
         usr = request.POST['username']  #Here, we get the username fetched from html page
-        usr = usr.replace("&","")
         URL = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=usercontribs&ucuser="
         URL = URL + usr
         r = requests.get(URL)  #Recieved data in json-format
