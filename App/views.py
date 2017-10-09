@@ -1,34 +1,66 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-import math
 import json
 import requests
 #import toolforge
+import urllib.parse
+
+from django.http import HttpResponse
+from django.shortcuts import render
+
 
 def index(request):
     return(render(request, 'App/home.html',{}))     
 
-
 def main(request):
-    if(request.method=='POST'):
-        usr = request.POST['username']  #Here, we get the username fetched from html page
-        URL = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=usercontribs&ucuser="
-        URL = URL + usr
-        r = requests.get(URL)  #Recieved data in json-format
-        if(r.status_code != 200):
-            return(render(request,'App/index.html',{"error":'HTTP response ' + str(r.status_code)}))
+    """
+    Display the recent english edits of the user.
+    """
+
+    if request.method == 'POST':
+
+        # Here, we get the username fetched from html page
+        username = request.POST['username']
+        print (username)
+        params={'ucuser':username}
+        encoded = urllib.parse.urlencode(params)
+
+        URL = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=usercontribs&"
+
+        URL = "{}{}".format(URL, encoded)
+        print (URL)
+
+        # Recieved data in json-format
+        response = requests.get(URL)
+
+        print(response.status_code)
+
+        if(response.status_code != 200):
+            return render(request,
+                          'App/index.html',
+                          {"error":'HTTP response {}'.format(str(response.status_code)),
+                           "response": "Invalid username",
+                           "code": 1}
+                          )
         else:
-            lst = json.loads(r.text)
-            try:    
-                if(lst['error']):
-                    return(render(request,'App/index.html',{"error":lst['error']['info']}))
-            except:   
-                sub_lst = lst['query']['usercontribs'] #Contribution data extracted
-                if(len(sub_lst)==0):
-                    return(render(request,'App/index.html',{"error":"No Edits found"}))
-            return(render(request,'App/index.html',{"contribution":sub_lst, "username":usr}))  #Here I send contribution for display on index.html page
+            lst = json.loads(response.text)
+            try:
+                if lst['error']:
+                    return render(request,
+                                 'App/index.html',
+                                 {"error":lst['error']['info']})
+            except:
+                # Contribution data extracted
+                sub_lst = lst['query']['usercontribs']
+                if len(sub_lst) == 0:
+                    return render(request,
+                                 'App/index.html',
+                                 {"error":"No Edits found for username {}".format(username)})
+
+            # Send contribution data for display
+            return render(request,
+                         'App/index.html',
+                         {"contribution":sub_lst, "username":username})
     else:
-        return(render(request,'App/index.html',{}))
+        return render(request, 'App/index.html')
 
 
 def main2(request):
@@ -60,4 +92,3 @@ def main2(request):
  
     else:
         return(render(request, 'App/task2.html',{}))
-
