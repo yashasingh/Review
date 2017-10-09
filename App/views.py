@@ -25,10 +25,8 @@ def main2(request):
             totaledits = totaledits_tup[0][0]
             userrank = userrank_tup[0][0]
             totalusers = totalusers_tup[0][0]
-            percentile = 100-((userrank*100)/(totalusers+1))
-            rating = math.ceil((userrank/totalusers)*100)
-            userrating = "User lies in top "+str(rating) + "%"
-            return(render(request, 'App/task2.html',{'edits':useredits, 'name':username, 'total_edits':totaledits, 'rank':userrank, 'total_users':totalusers, 'Percentile':percentile, 'user_rating':userrating}))
+            percentile = 100-(math.ceil((userrank/totalusers)*100))
+            return(render(request, 'App/task2.html',{'edits':useredits, 'name':username, 'total_edits':totaledits, 'rank':userrank, 'total_users':totalusers, 'percentile':percentile}))
         except:
             return(render(request, 'App/task2.html',{"false_query":1}))
  
