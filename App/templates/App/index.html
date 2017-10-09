@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> USER CONTRIBUTION SUMMARY </title>
+</head>
+<body>
+		<center>
+	     <form method="post"> 
+	     	{% csrf_token %}
+	     	Enter Username: <input type="text" name="username">
+	     	<br>
+	     	<br>
+	     	<button type='submit'> Submit </button>
+	     </form>
+	    </center> 
+	    
+	    <h2>
+	    {% if error %}
+	    	{{error}}
+	    {% endif %}
+	    {% if username %}
+	    	Username = {{username|safe}} <br>
+	    	<!-- <a href="https://phabricator.wikimedia.org/p/{{username}}/"> Profile link </a> -->
+		<br>
+		<br>
+		<h1>English Edits- </h1><br>
+	    {% endif %}
+		</h2>
+	    {% for x in contribution %}  <!-- Here I traverse all the contributions and display the following div-->
+	    <div>
+	    	user = {{x.user}}
+	    	Title = {{x.title}} <br>
+	    	PageID = {{x.pageid}} <br>
+	    	RevisionID = {{x.revid}} <br>
+	    	ParentID = {{x.parentid}} <br>
+	    	ns = {{x.ns}} <br>
+	    	Timestamp = {{x.timestamp}} <br>
+	    	Comment = {{x.comment}} <br>
+	    	Size = {{x.size}} <br>
+
+	    	<a href="https://en.wikipedia.org/w/index.php?title=User:{{x.user}}&amp;diff=prev&amp;oldid={{x.revid}}">
+	    		click here to revise edit.
+	    	</a>
+
+	    	<br><br><br>
+
+	    <div>
+	    {% endfor %}
+</body>
+</html>
+
