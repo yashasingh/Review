@@ -25,7 +25,7 @@ SECRET_KEY = '(ovofm6vwc^%m4mu+^4y7f!i058^7$v5=(^w9(@zqsn1e!)-fp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tools.wmflabs.org']
+ALLOWED_HOSTS = ['tools.wmflabs.org','127.0.0.1']
 
 
 # Application definition

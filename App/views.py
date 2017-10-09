@@ -3,7 +3,11 @@ from django.shortcuts import render
 import math
 import json
 import requests
-import toolforge
+#import toolforge
+
+def index(request):
+    return(render(request, 'App/home.html',{}))     
+
 
 def main(request):
     if(request.method=='POST'):
