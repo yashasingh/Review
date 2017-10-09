@@ -1,9 +1,10 @@
-from django.http import HttpResponse
-from django.shortcuts import render
 import math
 import json
 import requests
 import toolforge
+
+from django.http import HttpResponse
+from django.shortcuts import render
 
 def main2(request):
     if(request.method=='POST'):
