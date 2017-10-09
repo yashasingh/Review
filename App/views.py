@@ -15,20 +15,24 @@ def main(request):
 
         # Here, we get the username fetched from html page
         username = request.POST['username']
+        print (username)
         params={'ucuser':username}
         encoded = urllib.parse.urlencode(params)
 
         URL = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=usercontribs&"
 
         URL = "{}{}".format(URL, encoded)
+        print (URL)
 
         # Recieved data in json-format
         response = requests.get(URL)
 
+        print(response.status_code)
+
         if(response.status_code != 200):
             return render(request,
-                          'App/index.html',
-                          {"error":'HTTP response {}'.format(str(response.status_code),)
+                          'Microtask1/index.html',
+                          {"error":'HTTP response {}'.format(str(response.status_code)),
                            "response": "Invalid username",
                            "code": 1}
                           )
@@ -37,19 +41,19 @@ def main(request):
             try:
                 if lst['error']:
                     return render(request,
-                                 'App/index.html',
+                                 'Microtask1/index.html',
                                  {"error":lst['error']['info']})
             except:
                 # Contribution data extracted
-                sub_lst = lst['query']['usercontribs'] 
+                sub_lst = lst['query']['usercontribs']
                 if len(sub_lst) == 0:
                     return render(request,
-                                 'App/index.html',
+                                 'Microtask1/index.html',
                                  {"error":"No Edits found for username {}".format(username)})
 
             # Send contribution data for display
             return render(request,
-                         'App/index.html',
+                         'Microtask1/index.html',
                          {"contribution":sub_lst, "username":username})
     else:
-        return render(request, 'App/index.html')
+        return render(request, 'Microtask1/index.html')
