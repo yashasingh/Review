@@ -1,4 +1,5 @@
 import json
+import math
 import requests
 import toolforge
 import urllib.parse
@@ -76,6 +77,7 @@ def get_the_user_percentile(request):
     """
     if request.method=='POST':
         username = request.POST['username']
+        
         conn = toolforge.connect('kawiki_p')
         with conn.cursor() as cursor:
             # Get the edit count for the user
