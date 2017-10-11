@@ -4,7 +4,7 @@ from . import views
 
 app_name='App'
 urlpatterns = [
-    url(r'^$', views.index, name = 'index'),
-    url(r'^Microtask1/', views.main, name = 'main'),
-    url(r'^Microtask2/', views.main2, name = 'main2'),
+    url(r'^$', views.index, name='index'),
+    url(r'^Microtask1/', views.get_recent_english_edits, name='get_recent_english_edits'),
+    url(r'^Microtask2/', views.get_the_user_percentile, name='get_the_user_percentile'),
 ]

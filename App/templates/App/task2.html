@@ -1,37 +1,72 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Percentile</title>
+    <title>
+        Microtask 2
+    </title>
+    <link type="text/css" rel="stylesheet" href="https://tools-static.wmflabs.org/cdnjs/ajax/libs/materialize/0.100.2/css/materialize.css" ></link>
+    <link type="text/css" rel="stylesheet" href={% static "style.css" %} ></link>
 </head>
 <body>
-        <center>
-            <h2>Tool to display user Percentile and Rank in Georgian wiki</h2>
-            <p>Enter initial letter of username in capital</p> <br>
-            <form method="post">
-                {% csrf_token %}
-                Enter username: <input type="text" name="username">
-                <br>
-                <br>
-                <button type='submit'> Submit </button>
-                <a href="https://stats.wikimedia.org/EN/TablesWikipediaKA.htm">Click to see the list of users</a>
-            </form>
-        </center>
-        <br>
-        <br>
-        <br>
-        
-        {% if false_query %}
-            <h2>No user found</h2> <br>
-        {% endif %}
-
-        {% if name %}
-            Name = {{name}} <br>
-            Useredits = {{edits}} <br>
-            Total_edits = {{total_edits}} <br>
-            Rank = {{rank}} <br>
-            Total_users = {{total_users}} <br>
-            Percentile = {{percentile}} <br>
-       {% endif %}
+  <div class="row">
+  <nav>
+    <div class="nav-wrapper pd-left-20">
+      <a href="{% url 'App:get_the_user_percentile' %}" class="brand-logo">Microtask 2: User Percentile</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="{% url 'App:get_recent_english_edits' %}">Microtask1</a></li>
+        <li><a href="{% url 'App:index' %}">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+  </div>
+<center><h4>Tool to display user Percentile and Rank in Georgian wiki</h4></center>
+  <div class="row">
+      <form class="col s12" method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="input-field col s6 m6 offset-m3">
+            <input id="username" name="username" type="text">
+            <label for="username">Username</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6 m6 offset-m3">
+            <button class="btn waves-effect waves-light blue-color" type="submit" name="action">Search
+            </button>
+          </div>
+        </div>
+      </form>
+  </div>
+{% if false_query %}
+  <div class="row">
+    <div class="col s12 m6 offset-m3">
+      <div class="card blue lighten-2">
+        <div class="card-content white-text">
+        No user found
+        </div>
+      </div>
+    </div>
+  </div>
+      {% endif %}
+{% if name %}
+  <div class="row">
+    <div class="col s12 m6 offset-m3">
+      <div class="card blue lighten-2">
+        <div class="card-content white-text">
+          <span class="card-title"> Name : {{name}} </span>
+          <ul>
+            <li>Useredits = {{edits}} </li>
+            <li>Total_edits = {{total_edits}} </li>
+            <li>Rank = {{rank}} </li>
+            <li>Total_users = {{total_users}} </li>
+            <li>Percentile = {{percentile}} </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 
 </body>
 </html>
