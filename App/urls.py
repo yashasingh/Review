@@ -8,3 +8,4 @@ urlpatterns = [
     url(r'^Microtask1/', views.get_recent_english_edits, name='get_recent_english_edits'),
     url(r'^Microtask2/', views.get_the_user_percentile, name='get_the_user_percentile'),
 ]
+
