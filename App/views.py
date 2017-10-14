@@ -34,7 +34,7 @@ def get_the_user_percentile(request):
             userrank = userrank_tup[0][0]
             totalusers = totalusers_tup[0][0]
             # Calculates user percentile
-            percentile = 100-(math.ceil((userrank / totalusers)*100))
+            percentile = math.ceil((userrank / totalusers)*100)
             return render(request,
                          'App/task2.html',
                          {'edits':useredits,
