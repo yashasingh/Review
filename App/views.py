@@ -16,7 +16,6 @@ def user_revisions_analysis(request):
         # if username is submitted blank 
         if not username:
             return render(request, "App/task4.html", {"error": "Please enter a username"})
-
         # if username is not blank
         details = list()
         parameters = {'action':'query',
@@ -24,40 +23,31 @@ def user_revisions_analysis(request):
                       'list':'usercontribs',
                       'uclimit':'5',
                       'ucuser':username}
-        url_parameters = urllib.parse.urlencode(parameters)
-        url1 = 'https://en.wikipedia.org/w/api.php?{}'.format(url_parameters)
-        
+        url_base = 'https://en.wikipedia.org/w/api.php?'
         # Recieved data in json-format
-        response = requests.get(url1)
- 
+        response = requests.get(url_base, params = parameters)
         if response.status_code == 200:
-            lst = json.loads(response.text)
             try:
-                # if username contains invalid value
-                if lst['error']:
-                    return render(request,
-                                  'App/task4.html',
-                                  {"error":lst['error']['info']}
-                                 )
-            except:
                 # Edit data extracted
                 edits_data = json.loads(response.text)
+                if 'error' in edits_data:
+                    return(render(request,
+                                  'App/task4.html',
+                                  {"error": edits_data['error']['info']}))
                 contributions = [i for i in edits_data['query']['usercontribs']]
                 # if user has no edits 
                 if len(contributions) == 0:
                     return render(request,
                                   'App/task4.html',
                                   {"error": "0 edits found for username {}".format(username)})
-
                 for articles in contributions:
-                    url2 = "https://ores.wikimedia.org/v3/scores/enwiki/" + str(articles['revid'])
+                    url_ores = "https://ores.wikimedia.org/v3/scores/enwiki/{}".format(str(articles['revid']))
                     # recieve ORES response
-                    response2 = requests.get(url2)
+                    response2 = requests.get(url_ores)
                     if response2.status_code != 200:
                         return render(request,
-                                      'App/tesk4.html',
+                                      'App/task4.html',
                                       {"error": "ORES failed to return response"})
-
                     # if successfull response from ORES
                     data = json.loads(response2.text)
                     analysis = data['enwiki']['scores'][str(articles['revid'])]
@@ -72,8 +62,15 @@ def user_revisions_analysis(request):
                                    'revid': articles['revid'],
                                    'user': articles['user']}
                     details.append(predictions)
-        context = {'articles': details}
-        return render(request,'App/task4.html',context)
-
+            except Exception as err:
+                return(render(request,
+                              'App/task4.html',
+                              {'error': err}))
+            context = {'articles': details}
+            return render(request, 'App/task4.html', context)
+        else:
+            return render(request,
+                          'App/index.html',
+                          {"error": 'Exit code {}'.format(str(response.status_code))})
     else:
         return render(request,'App/task4.html',{})
