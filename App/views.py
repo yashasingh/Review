@@ -31,23 +31,17 @@ def user_revisions_analysis(request):
                 # Edit data extracted
                 edits_data = json.loads(response.text)
                 if 'error' in edits_data:
-                    return(render(request,
-                                  'App/task4.html',
-                                  {"error": edits_data['error']['info']}))
+                    raise Error(edits_data['error']['info'])
                 contributions = [i for i in edits_data['query']['usercontribs']]
                 # if user has no edits 
                 if len(contributions) == 0:
-                    return render(request,
-                                  'App/task4.html',
-                                  {"error": "0 edits found for username {}".format(username)})
+                    raise Error("0 edits found for username {}".format(username))
                 for articles in contributions:
                     url_ores = "https://ores.wikimedia.org/v3/scores/enwiki/{}".format(str(articles['revid']))
                     # recieve ORES response
                     response2 = requests.get(url_ores)
                     if response2.status_code != 200:
-                        return render(request,
-                                      'App/task4.html',
-                                      {"error": "ORES failed to return response"})
+                        raise Error("ORES failed to return response")
                     # if successfull response from ORES
                     data = json.loads(response2.text)
                     analysis = data['enwiki']['scores'][str(articles['revid'])]
