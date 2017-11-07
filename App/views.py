@@ -20,16 +20,16 @@ def get_recent_english_edits(request):
             return render(request, "App/index.html", {"error": "Please enter a username"})
 
         # if username is not blank
-        params = {'ucuser': username}
+        params = {'action':'query',
+                  'format':'json',
+                  'list':'usercontribs',
+                  'ucuser': username}
 
-        encoded = urllib.parse.urlencode(params)
 
-        URL = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=usercontribs&"
-
-        URL = "{}{}".format(URL, encoded)
+        URL = "https://en.wikipedia.org/w/api.php?"
 
         # Recieved data in json-format
-        response = requests.get(URL)
+        response = requests.get(URL, params = params)
  
         if response.status_code == 200:
             lst = json.loads(response.text)
