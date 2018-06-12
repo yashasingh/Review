@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Microtask 5
+	</title>
+	<link type="text/css" rel="stylesheet" href="https://tools-static.wmflabs.org/cdnjs/ajax/libs/materialize/0.100.2/css/materialize.css" ></link>
+	<link type="text/css" rel="stylesheet" href={% static "style.css" %} ></link>
+</head>
+<body>
+  <div class="row">
+  <nav>
+    <div class="nav-wrapper pd-left-20">
+      <a href="{% url 'App:get_article_view_count' %}" class="brand-logo">Microtask 5: View Count of articles in current year</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="{% url 'App:get_the_user_percentile' %}">Microtask1</a></li>
+        <li><a href="{% url 'App:get_the_user_percentile' %}">Microtask2</a></li>
+        <li><a href="{% url 'App:index' %}">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+  </div>
+<center><h4>Tool to display the view count of articles in current year</h4></center>
+  <div class="row">
+      <form class="col s12" method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="input-field col s6 m6 offset-m3">
+            <input id="username" name="username" type="text">
+            <label for="username">Username</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6 m6 offset-m3">
+            <button class="btn waves-effect waves-light blue-color" type="submit" name="action">Search
+            </button> E.g. username = WilliamJE
+          </div>
+        </div>
+      </form>
+  </div>
+  {% if error %}
+  <div class="row">
+    <div class="col s12 m6 offset-m3">
+      <div class="card blue lighten-2">
+        <div class="card-content white-text">
+        {{error}}   
+        </div>
+      </div>
+    </div>
+  </div>
+      {% endif %}
+  <!-- loop -->
+  {% for x in articles %}
+
+  <div class="row">
+    <div class="col s12 m6 offset-m3">
+      <div class="card blue lighten-2">
+        <div class="card-content white-text">
+          <ul>
+            <li>Title = {{x.Title}} </li>
+            <li>Viewcount = {{x.Views}} </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+</body>
+</html>
