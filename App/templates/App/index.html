@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Microtask 1
+	</title>
+	<link type="text/css" rel="stylesheet" href="https://tools-static.wmflabs.org/cdnjs/ajax/libs/materialize/0.100.2/css/materialize.css" ></link>
+	<link type="text/css" rel="stylesheet" href={% static "style.css" %} ></link>
+</head>
+<body>
+  <div class="row">
+  <nav>
+    <div class="nav-wrapper pd-left-20">
+      <a href="{% url 'App:get_recent_english_edits' %}" class="brand-logo">Microtask 1: Recent english edits</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="{% url 'App:get_the_user_percentile' %}">Microtask2</a></li>
+        <li><a href="{% url 'App:index' %}">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+  </div>
+<center><h4>Tool to display the recent English Wikipedia edits of that user</h4></center>
+  <div class="row">
+      <form class="col s12" method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="input-field col s6 m6 offset-m3">
+            <input id="username" name="username" type="text">
+            <label for="username">Username</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6 m6 offset-m3">
+            <button class="btn waves-effect waves-light blue-color" type="submit" name="action">Search
+            </button>
+          </div>
+        </div>
+      </form>
+  </div>
+  {% if error %}
+  <div class="row">
+    <div class="col s12 m6 offset-m3">
+      <div class="card blue lighten-2">
+        <div class="card-content white-text">
+        {{error}}   
+        </div>
+      </div>
+    </div>
+  </div>
+      {% endif %}
+  <!-- loop -->
+  {% for x in contribution %}
+
+  <div class="row">
+    <div class="col s12 m6 offset-m3">
+      <div class="card blue lighten-2">
+        <div class="card-content white-text">
+          <span class="card-title"> User : {{x.user}}</span>
+          <ul>
+            <li>Title = {{x.title}} </li>
+            <li>PageID = {{x.pageid}} </li>
+            <li>RevisionID = {{x.revid}} </li>
+            <li>ParentID = {{x.parentid}} </li>
+            <li>ns = {{x.ns}}</li>
+            <li>Timestamp = {{x.timestamp}} </li>
+            <li>Size = {{x.size}} </li>
+            <li><a href="https://en.wikipedia.org/w/index.php?title=User:{{x.user}}&amp;diff=prev&amp;oldid={{x.revid}}">
+          Click here to view the edit.
+        </a> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+</body>
+</html>
+

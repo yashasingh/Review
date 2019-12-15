@@ -1,0 +1,35 @@
+.center {
+	text-align: center;
+}
+.pointer {
+	cursor: pointer;
+}
+
+.yellow {
+	color: yellow !important;
+}
+
+nav {
+	background-color: #64b5f6;
+	color: white;
+}
+input:active ~ label, input:valid ~ label 		{
+  top:-20px;
+  font-size:14px;
+  color:#5264AE;
+}
+
+.blue-color {
+	background-color: #64b5f6;
+}
+
+.pd-left-20 {
+	padding-left: 20px;
+}
+.btn:hover, .btn-large:hover {
+	background-color: #64b5f6;
+}
+.btn:focus, .btn-large:focus, .btn-floating:focus {
+	background-color: #64b5f6;
+	
+}
