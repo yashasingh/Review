@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Outreachy Tasks
+	</title>
+	<link type="text/css" rel="stylesheet" href="https://tools-static.wmflabs.org/cdnjs/ajax/libs/materialize/0.100.2/css/materialize.css" ></link>
+	<link href="https://tools-static.wmflabs.org/cdnjs/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+  <link type="text/css" rel="stylesheet" href={% static "style.css" %} ></link>
+</head>
+<body>
+	<div class="row">
+		<h2 class="center"> Outreachy Microtasks </h2>
+	</div>
+      <div class="row">
+        <div class="col s12 m6">
+          <div class="card blue lighten-2">
+            <div class="card-content white-text">
+              <span class="card-title">User Contribution Summary</span>
+              <p>A simple tool that takes a username and lists the recent English Wikipedia edits of that user</p>
+            </div>
+            <div class="card-action">
+              <a class="pointer" href="https://github.com/yashasingh/Review/pull/1">Github</a>
+              <a class="pointer" href="{% url 'App:get_recent_english_edits' %}">Microtask1</a>
+            </div>
+          </div>
+        </div>
+      <div class="col s12 m6">
+          <div class="card blue lighten-2">
+            <div class="card-content white-text">
+              <span class="card-title">User Percentile</span>
+              <p>A simple tool that takes a username and tells what percentile the user is at by number of edits.</p>
+            </div>
+            <div class="card-action">
+              <a class="pointer" href="https://github.com/yashasingh/Review/pull/2">Github</a>
+              <a class="pointer" href="{% url 'App:get_the_user_percentile' %}">Microtask2</a>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+</html>
